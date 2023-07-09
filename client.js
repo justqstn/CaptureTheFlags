@@ -1,6 +1,10 @@
-
 // Захват флагов от just_qstn
 // v1
+
+
+
+
+
 // Константы
 const FLAG_TARGET = 5,
     WAITING_TIME = 10,
@@ -9,7 +13,7 @@ const FLAG_TARGET = 5,
     END_TIME = 10,
     IMMORTALITY_TIME = 3;
 // Переменные
-var gameState = Properties.GetContext().Get("game"),
+let gameState = Properties.GetContext().Get("game"),
     mainTimer = Timers.GetContext().Get("main"),
     flagState = Properties.GetContext().Get("flag"),
     inv = Inventory.GetContext(),
@@ -31,17 +35,9 @@ BreackGraph.OnlyPlayerBlocksDmg =
 BreackGraph.WeakBlocks = GameMode.Parameters.GetBool("LoosenBlocks");
 
 // Создание команд
-Teams.Add(
-    "red",
-    "<i><size=38>К</size><size=28>расные</size>\nрежим от just_qstn</i>",
-    { r: 0.8 }
-);
-Teams.Add(
-    "blue",
-    "<i><size=38>С</size><size=28>иние</size>\nрежим от just_qstn</i>",
-    { b: 0.8 }
-);
-var Red = Teams.Get("red"),
+Teams.Add("red", "<B><size=38>К</size><size=28>расные</size>\nрежим от just_qstn</B>", { r: 0.75 });
+Teams.Add("blue", "<B><size=38>С</size><size=28>иние</size>\nрежим от just_qstn</B>", { b: 0.75 });
+let Red = Teams.Get("red"),
     Blue = Teams.Get("blue");
 Red.Spawns.SpawnPointsGroups.Add(2);
 Blue.Spawns.SpawnPointsGroups.Add(1);
@@ -179,7 +175,7 @@ Timers.OnPlayerTimer.Add(function (t) {
 
 // Функции
 function SpawnTeams() {
-    var e = Teams.GetEnumerator();
+    let e = Teams.GetEnumerator();
     while (e.moveNext()) {
         e.Current.Spawns.Despawn();
         e.Current.Spawns.Spawn();
