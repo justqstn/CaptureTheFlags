@@ -41,8 +41,6 @@ let Red = Teams.Get("red"),
     Blue = Teams.Get("blue");
 Red.Spawns.SpawnPointsGroups.Add(2);
 Blue.Spawns.SpawnPointsGroups.Add(1);
-Red.Properties.Get("flags").Value = 0;
-Blue.Properties.Get("flags").Value = 0;
 Blue.Build.BlocksSet.Value = BuildBlocksSet.Blue;
 Red.Build.BlocksSet.Value = BuildBlocksSet.Red;
 
@@ -51,11 +49,11 @@ Ui.GetContext().MainTimerId.Value = mainTimer.Id;
 
 Ui.GetContext().TeamProp1.Value = {
     Team: "red",
-    Prop: "flags",
+    Prop: "hint",
 };
 Ui.GetContext().TeamProp2.Value = {
     Team: "blue",
-    Prop: "flags",
+    Prop: "hint",
 };
 
 LeaderBoard.PlayerLeaderBoardValues = [
@@ -86,6 +84,10 @@ LeaderBoard.PlayersWeightGetter.Set(function (p) {
 });
 
 // События
+Teams.OnAddTeam.Add(function(t) {
+	t.Properties.Get("flags").Value = 0;
+	t.Properties.Get("flag_state").Value = "на базе";
+});
 Teams.OnRequestJoinTeam.Add(function (p, t) {
     p.Properties.Get("flag").Value = false;
     t.Add(p);
@@ -101,17 +103,26 @@ Damage.OnKill.Add(function (p, k) {
         p.Properties.Kills.Value++;
         p.Timers.Get("combo").Restart(4);
         p.Properties.Scores.Value += 100 * p.Properties.Get("combo").Value;
+		if (k.Properties.Get("flag").Value) p.Team.Ui.Hint.Value = p.NickName + " вернул флаг на базу!";
+    }
+	if (k.Properties.Get("flag").Value) {
+		k.Team.Ui.Hint.Value = k.NickName + " потерял флаг противника!";
+        k.Properties.Get("flag").Value = false;
+		let at = AnotherTeam(p.Team);
+		at.Properties.Get("flag_state").Value = "на базе";
+		AreaService.Get(at.Id).Tags.Remove("captured");
     }
 });
 
 Damage.OnDeath.Add(function (p) {
     p.Timers.Get("combo").Stop();
     p.Properties.Deaths.Value++;
-    if (p.Properties.Get("flag").Value) {
-        p.Properties.Get("flag").Value = false;
-        if (p.Team == Blue) AreaService.Get("red").Tags.Remove("captured");
-        else if (p.Team == Red) AreaService.Get("blue").Tags.Remove("captured");
-    }
+});
+
+Properties.OnTeamProperty.Add(function(c, v) {
+	if (v.Name == "hint") {
+		c.Team.Properties.Get("hint").Value = "< Флаги: " + c.Team.Properties.Get("flags").Value + " >\n\n< Флаг: " + c.Team.Properties.Get("flag_state") + " >";
+	}
 });
 
 Spawns.OnSpawn.Add(function (p) {
@@ -134,6 +145,7 @@ captureTrigger.OnEnter.Add(function (p, a) {
     if (gameState.Value != "game") return;
     if (!a.Tags.Contains(p.Team.Id)) {
         Teams.Get(a.Name).Ui.Hint.Value = "Ваш флаг забрал " + p.NickName;
+		Teams.Get(a.Name).Properties.Get("flag_state").Value = "флаг у " + p.NickName;
         p.Team.Ui.Hint.Value = "Флаг противника у вашей команды!";
         if (p.Properties.Get("flag").Value) return;
         p.Properties.Get("flag").Value = true;
@@ -144,8 +156,10 @@ captureTrigger.OnEnter.Add(function (p, a) {
         else if (p.Team == Red) AreaService.Get("blue").Tags.Remove("captured");
         p.Team.Properties.Get("flags").Value++;
         p.Properties.Scores.Value += 1000;
-        Blue.Ui.Hint.Reset();
-        Red.Ui.Hint.Reset();
+        p.Team.Ui.Hint.Value = p.NickName + " доставил флаг на базу!";
+		let at = AnotherTeam(p.Team);
+		at.Ui.Hint.Value = p.NickName + " доставил ваш флаг!";
+		at.Properties.Get("flag_state").Value = "на базе";
         if (p.Team.Properties.Get("flags").Value >= FLAG_TARGET) End();
     }
 });
@@ -174,6 +188,11 @@ Timers.OnPlayerTimer.Add(function (t) {
 });
 
 // Функции
+function AnotherTeam(t) {
+	if (t == Blue) return Red;
+	if (t == Red) return Blue;
+}
+
 function SpawnTeams() {
     let e = Teams.GetEnumerator();
     while (e.moveNext()) {
