@@ -131,58 +131,7 @@ try {
     p.Properties.Immortality.Value = true;
   });
 
-  // Зоны
-  redView.Tags = ["red", "redflag"];
-  redView.Color = { r: 1 };
-  redView.Enable = true;
-
-  blueView.Tags = ["blue", "blueflag"];
-  blueView.Color = { b: 1 };
-  blueView.Enable = true;
-
-  flagTrigger.Tags = ["flag", "blueflag", "redflag"];
-  flagTrigger.Enable = true;
-  flagTrigger.OnEnter.Add(function (p, a) {
-    let team = a.Tags.Contains("blueflag") ? Blue : Red;
-    let at = AnotherTeam(team);
-    if (p.Team == team) {
-      team.Properties.Get("flag_state").Value = "на базе";
-      AreaService.Get(team.Id).Tags.Remove("captured");
-      team.Ui.GetContext().Hint.Value = p.NickName + " вернул флаг на базу";
-      at.Ui.GetContext().Hint.Value = p.NickName + " вернул флаг на свою базу";
-      p.Properties.Scores.Value += 1000;
-    } else {
-      team.Ui.GetContext().Hint.Value = p.NickName + " подобрал флаг";
-      at.Ui.GetContext().Hint.Value = p.NickName + " подобрал ваш флаг";
-      p.Properties.Get("flag").Value = true;
-    }
-    a.Ranges.Clear();
-  });
-
-  captureTrigger.Tags = ["blue", "red", "captured"];
-  captureTrigger.Enable = true;
-  captureTrigger.OnEnter.Add(function (p, a) {
-    if (gameState.Value != "game") return;
-    if (!a.Tags.Contains(p.Team.Id)) {
-      Teams.Get(a.Name).Ui.Hint.Value = "Ваш флаг забрал " + p.NickName;
-      Teams.Get(a.Name).Properties.Get("flag_state").Value = "флаг у " + p.NickName;
-      p.Team.Ui.Hint.Value = "Флаг противника у вашей команды!";
-      if (p.Properties.Get("flag").Value) return;
-      p.Properties.Get("flag").Value = true;
-      a.Tags.Add("captured");
-    } else if (p.Properties.Get("flag").Value && !a.Tags.Contains("captured")) {
-      p.Properties.Get("flag").Value = false;
-      if (p.Team == Blue) AreaService.Get("red").Tags.Remove("captured");
-      else if (p.Team == Red) AreaService.Get("blue").Tags.Remove("captured");
-      p.Team.Properties.Get("flags").Value++;
-      p.Properties.Scores.Value += 1000;
-      p.Team.Ui.Hint.Value = p.NickName + " доставил флаг на базу!";
-      let at = AnotherTeam(p.Team);
-      at.Ui.Hint.Value = p.NickName + " доставил ваш флаг!";
-      at.Properties.Get("flag_state").Value = "на базе";
-      if (p.Team.Properties.Get("flags").Value >= FLAG_TARGET) End();
-    }
-  });
+  
 
   // Таймеры
   mainTimer.OnTimer.Add(function () {
