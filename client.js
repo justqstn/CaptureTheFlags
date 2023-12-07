@@ -37,8 +37,8 @@ try {
   BreackGraph.WeakBlocks = GameMode.Parameters.GetBool("LoosenBlocks");
 
   // Создание команд
-  Teams.Add("red", "<B><size=38>К</size><size=28>расные</size>\nрежим от just_qstn</B>", { r: 0.75 });
-  Teams.Add("blue", "<B><size=38>С</size><size=28>иние</size>\nрежим от just_qstn</B>", { b: 0.75 });
+  Teams.Add("red", "<B><size=34>К</size><size=28>расные</size>\nрежим от just_qstn</B>", { r: 0.75 });
+  Teams.Add("blue", "<B><size=34>С</size><size=28>иние</size>\nрежим от just_qstn</B>", { b: 0.75 });
   let Red = Teams.Get("red"),
     Blue = Teams.Get("blue");
   Red.Spawns.SpawnPointsGroups.Add(2);
@@ -214,6 +214,7 @@ try {
   }
 
   function SpawnTeams() {
+    Spawns.GetContext().Enable = true;
     let e = Teams.GetEnumerator();
     while (e.moveNext()) {
       e.Current.Spawns.Despawn();
@@ -231,7 +232,6 @@ try {
     gameState.Value = "building";
     Ui.GetContext().Hint.Value = "Застраивайте базу!";
     mainTimer.Restart(BUILDING_TIME);
-    Spawns.GetContext().Enable = true;
     SpawnTeams();
   }
 
