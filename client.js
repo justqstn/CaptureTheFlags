@@ -225,7 +225,7 @@ try {
     gameState.Value = "waiting";
     Ui.GetContext().Hint.Value = "Загрузка...";
     mainTimer.Restart(WAITING_TIME);
-    Spawns.GetContext().Enable = false;
+    Spawns.GetContext().Enable = true;
   }
 
   function Building() {
