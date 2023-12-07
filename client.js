@@ -122,7 +122,7 @@ try {
 
   Properties.OnTeamProperty.Add(function (c, v) {
     if (v.Name != "hint") {
-      c.Team.Properties.Get("hint").Value = "< Флаги: " + c.Team.Properties.Get("flags").Value + " >\n\n< Флаг: " + c.Team.Properties.Get("flag_state") + " >";
+      c.Team.Properties.Get("hint").Value = "< Флаги: " + c.Team.Properties.Get("flags").Value + " >\n\n< Флаг: " + c.Team.Properties.Get("flag_state").Value + " >";
     }
   });
 
