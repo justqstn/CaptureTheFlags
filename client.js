@@ -48,11 +48,11 @@ Teams.Add("blue", "<B><size=34>С</size><size=28>иние</size>\nрежим о�
 
 let red_team = Teams.Get("red"), blue_team = Teams.Get("blue");
 
-Red.Spawns.SpawnPointsGroups.Add(2);
-Blue.Spawns.SpawnPointsGroups.Add(1);
+red_team.Spawns.SpawnPointsGroups.Add(2);
+blue_team.Spawns.SpawnPointsGroups.Add(1);
 
-Blue.Build.BlocksSet.Value = BuildBlocksSet.Blue;
-Red.Build.BlocksSet.Value = BuildBlocksSet.Red;
+red_team.Build.BlocksSet.Value = BuildBlocksSet.Blue;
+blue_team.Build.BlocksSet.Value = BuildBlocksSet.Red;
 
 // Интерфейс
 Ui.GetContext().MainTimerId.Value = mainTimer.Id;
@@ -278,4 +278,7 @@ function end()
   Game.GameOver(LeaderBoard.GetTeams());
   main_timer.Restart(10);
 }
+
+start();
+
 } catch(e) { Validate.ReportInvalid(e.name + " " + e.message); }
