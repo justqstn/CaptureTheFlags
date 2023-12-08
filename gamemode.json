@@ -15,6 +15,11 @@
   "Parameters": {
     "Bool": [
       {
+        "Name": "building",
+        "DisplayName": "Строительство",
+        "Default": true
+      },
+      {
         "Name": "MapRotation",
         "DisplayName": "GmParams/MapRotation",
         "Default": true
