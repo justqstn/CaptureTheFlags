@@ -117,12 +117,16 @@ Damage.OnKill.Add(function (p, k)
   }
   if (k.Properties.Get("flag").Value) 
   {
-    if (p) p.Properties.Scores += 250;
+    try {
+      let rival_team;
+    if (p) {p.Properties.Scores += 250; rival_team = p.Team;}
+    else rival_team = get_opposing_team(k.Team);
     k.Properties.Deaths.Value++;
-    AreaService.Get(p.Team.Id + "_flag").Ranges.Add({Start: k.PositionIndex, End: {x: k.PositionIndex.x + 1, y: k.PositionIndex.y + 4, z: k.PositionIndex.z + 1}});
-    p.Team.Properties.Get("flag_state").Value = "потерян";
-    p.Ui.GetContext().Hint.Value = k.NickName + " потерял ваш флаг";
+    k.Team.Properties.Get("flag_state").Value = "потерян";
+    k.Ui.GetContext().Hint.Value = k.NickName + " потерял ваш флаг";
     k.Ui.GetContext().Hint.Value = k.NickName + " потерял флаг соперника";
+    AreaService.Get(k.Team.Id + "_flag").Ranges.Add({Start: k.PositionIndex, End: {x: k.PositionIndex.x + 1, y: k.PositionIndex.y + 4, z: k.PositionIndex.z + 1}});
+    } catch(e) { msg.Show(e.name + " " + e.message); }
   }
 });
 
