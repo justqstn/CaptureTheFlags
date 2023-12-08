@@ -1,4 +1,6 @@
-// Захват Флагов
+try
+{
+  // Захват Флагов
 
 
 
@@ -276,3 +278,4 @@ function end()
   Game.GameOver(LeaderBoard.GetTeams());
   main_timer.Restart(10);
 }
+} catch(e) { Validate.ReportInvalid(e.name + " " + e.message); }
