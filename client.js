@@ -146,6 +146,8 @@ main_timer.OnTimer.Add(function(){
 function spawn_teams()
 {
   Spawns.GetContext().Enable = true;
+  red_team.Spawns.Despawn();
+  blue_team.Spawns.Despawn();
   red_team.Spawns.Spawn();
   blue_team.Spawns.Spawn();
 }
@@ -250,7 +252,7 @@ function building()
 
   Ui.GetContext().Hint.Value = "Стройтесь!";
 
-  SpawnTeams();
+  spawn_teams();
 
   main_timer.Restart(30);
 }
@@ -261,7 +263,7 @@ function game()
 
   Ui.GetContext().Hint.Value = "Захватывайте чужой флаг и несите его в зону на базе!";
 
-  SpawnTeams();
+  spawn_teams();
 
   inv.Main.Value = true;
   inv.Explosive.Value = true;
