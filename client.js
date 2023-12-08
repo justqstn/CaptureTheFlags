@@ -29,13 +29,6 @@ inv.Build.Value = GameMode.Parameters.GetBool("building");
 TeamsBalancer.IsAutoBalance = true;
 Spawns.GetContext().Enable = false;
 
-add_area({name: "blue", view: true, color: {b: 0.75}, tags: ["blue", "blue_flag"]});
-add_area({name: "red", view: true, color: {r: 0.75}, tags: ["red", "red_flag"]});
-
-add_area({name: "capture", view: false, trigger: true, tags: ["captured", "red", "blue"], enter: t_capture});
-add_area({name: "flag", view: false, trigger: true, tags: ["red_flag", "blue_flag"], enter: t_pickup});
-
-
 Damage.FriendlyFire = GameMode.Parameters.GetBool("FriendlyFire");
 BreackGraph.OnlyPlayerBlocksDmg =
   GameMode.Parameters.GetBool("PartialDesruction");
@@ -294,6 +287,15 @@ function end()
   Game.GameOver(LeaderBoard.GetTeams());
   main_timer.Restart(10);
 }
+
+
+// Инициализация
+
+add_area({name: "blue", view: true, color: {b: 0.75}, tags: ["blue", "blue_flag"]});
+add_area({name: "red", view: true, color: {r: 0.75}, tags: ["red", "red_flag"]});
+
+add_area({name: "capture", view: false, trigger: true, tags: ["captured", "red", "blue"], enter: t_capture});
+add_area({name: "flag", view: false, trigger: true, tags: ["red_flag", "blue_flag"], enter: t_pickup});
 
 start();
 
