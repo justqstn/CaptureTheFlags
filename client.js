@@ -33,7 +33,7 @@ Spawns.GetContext().Enable = false;
 add_area({name: "blue", view: true, color: {b: 0.75}, tags: ["blue", "blue_flag"]});
 add_area({name: "red", view: true, color: {r: 0.75}, tags: ["red", "red_flag"]});
 
-add_area({name: "capture", view: false, trigger: true, tags: ["captured"], enter: t_capture});
+add_area({name: "capture", view: false, trigger: true, tags: ["captured", "red", "blue"], enter: t_capture});
 add_area({name: "flag", view: false, trigger: true, tags: ["red_flag", "blue_flag"], enter: t_pickup});
 
 
@@ -99,10 +99,17 @@ Teams.OnAddTeam.Add(function (t) {
   t.Properties.Get("flag_state").Value = "на базе";
   AreaService.Get(t.Id + "_flag").Tags.Add(t.Id + "_flag");
 });
+
 Teams.OnRequestJoinTeam.Add(function (p, t) {
   p.Properties.Get("flag").Value = false;
   p.Properties.Get("_flag").Value = (false).to_string();
   t.Add(p);
+});
+
+Properties.OnTeamProperty.Add(function(c, v) {
+	if (v.Name != "hint") {
+		c.Team.Properties.Get("hint").Value = "< Флаги: " + c.Team.Properties.Get("flags").Value + " >\n\n< Флаг: " + c.Team.Properties.Get("flag_state") + " >";
+	}
 });
 
 Teams.OnPlayerChangeTeam.Add(function (p) {
