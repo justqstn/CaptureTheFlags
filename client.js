@@ -228,6 +228,7 @@ function t_capture(p, a)
 function t_pickup(p, a)
 {
   let rival_team = get_opposing_team(p.Team);
+  a.Ranges.Clear();
   if (a.Tags.Contains(p.Team.Id))
   {
     p.Properties.Scores.Value += 700;
@@ -248,7 +249,6 @@ function t_pickup(p, a)
 
     rival_team.Properties.Get("flag_state").Value = "у " + p.NickName;
   }
-  a.Ranges.Clear();
 }
 
 function start()
