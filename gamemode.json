@@ -1,7 +1,7 @@
 {
   "Name": "<B><color=#DC143C>Захват</color> <color=#0000CD>Флагов</color></B>",
   "Description": "<B>v1.2 - фикс багов, дроп флага после смерти. Режим от just_qstn.</B>\nЗахватывайте флаги и переносите их на свою базу (свою зону)!\nДля создателей карт: триггеры зон захвата флага это red и blue, соответственно для каждой команды.",
-  "StartClientVersion": 334,
+  "StartClientVersion": 515,
   "MapFilter": {
     "IsBlank": false,
     "HasParcourEnd": false
