@@ -55,7 +55,7 @@ red_team.Build.BlocksSet.Value = BuildBlocksSet.Blue;
 blue_team.Build.BlocksSet.Value = BuildBlocksSet.Red;
 
 // Интерфейс
-Ui.GetContext().MainTimerId.Value = mainTimer.Id;
+Ui.GetContext().MainTimerId.Value = main_timer.Id;
 
 Ui.GetContext().TeamProp1.Value = {
   Team: "red",
