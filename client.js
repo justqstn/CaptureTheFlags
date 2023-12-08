@@ -110,6 +110,7 @@ Teams.OnPlayerChangeTeam.Add(function (p) {
 
 Damage.OnKill.Add(function (p, k)
 {
+  k.Properties.Deaths.Value++;
   if (p.IdInRoom != k.IdInRoom)   
   {
     p.Properties.Kills.Value++;
@@ -121,7 +122,6 @@ Damage.OnKill.Add(function (p, k)
       let rival_team;
     if (p) {p.Properties.Scores += 250; rival_team = p.Team;}
     else rival_team = get_opposing_team(k.Team);
-    k.Properties.Deaths.Value++;
     k.Team.Properties.Get("flag_state").Value = "потерян";
     k.Ui.GetContext().Hint.Value = k.NickName + " потерял ваш флаг";
     k.Ui.GetContext().Hint.Value = k.NickName + " потерял флаг соперника";
