@@ -160,14 +160,22 @@ function spawn_teams()
 
 function add_area(params)
 {
-  let t = AreaPlayerTriggerService.Get(params.name), v = AreaViewService.GetContext().Get(params.name);
-  v.Tags = params.tags;
-  t.Tags = params.tags;
-  v.Color = params.color;
-  v.Enable = params.view;
-  t.Enable = params.trigger;
-  t.OnEnter.Add(params.enter);
-  t.OnExit.Add(params.exit);
+  if (params.view != null)
+  {
+    let v = AreaViewService.GetContext().Get(params.name);
+    v.Color = params.color;
+    v.Tags = params.tags;
+    v.Enable = params.view;
+  }
+
+  if (params.trigger != null)
+  {
+    let t = AreaPlayerTriggerService.Get(params.name);
+    t.Tags = params.tags;
+    t.Enable = params.trigger;
+    if (params.enter) t.OnEnter.Add(params.enter);
+    if (params.exit) t.OnExit.Add(params.exit);
+  }
   //return { Trigger: t, View: t };
 }
 
