@@ -17,10 +17,9 @@ let inv = Inventory.GetContext(), main_timer = Timers.GetContext().Get("main"), 
 // Функции примитивов
 Boolean.prototype.to_string = function()
 {
-  if (this == true) return "✔ 1";
+  if (this == true) return "✔";
   else return " ";
 }
-
 
 Spawns.GetContext().RespawnTime.Value = 10;
 inv.Main.Value = false;
@@ -108,7 +107,7 @@ Teams.OnRequestJoinTeam.Add(function (p, t) {
 
 Properties.OnTeamProperty.Add(function(c, v) {
 	if (v.Name != "hint") {
-		c.Team.Properties.Get("hint").Value = "< Флаги: " + c.Team.Properties.Get("flags").Value + " >\n\n< Флаг: " + c.Team.Properties.Get("flag_state") + " >";
+		c.Team.Properties.Get("hint").Value = "< Флаги: " + c.Team.Properties.Get("flags").Value + " >\n\n< Флаг: " + c.Team.Properties.Get("flag_state").Value + " >";
 	}
 });
 
@@ -129,8 +128,8 @@ Damage.OnKill.Add(function (p, k)
     k.Properties.Deaths.Value++;
     AreaService.Get(p.Team.Id + "_flag").Ranges.Add({Start: k.PositionIndex, End: {x: k.PositionIndex.x + 1, y: k.PositionIndex.y + 4, z: k.PositionIndex.z + 1}});
     p.Team.Properties.Get("flag_state").Value = "потерян";
-    p.Ui.GetContext().Hint.Value = k.NickName = " потерял ваш флаг";
-    k.Ui.GetContext().Hint.Value = k.NickName = " потерял флаг соперника";
+    p.Ui.GetContext().Hint.Value = k.NickName + " потерял ваш флаг";
+    k.Ui.GetContext().Hint.Value = k.NickName + " потерял флаг соперника";
   }
 });
 
@@ -165,8 +164,8 @@ function add_area(params)
   v.Tags = params.tags;
   t.Tags = params.tags;
   v.Color = params.color;
-  v.Enable = params.view || true;
-  t.Enable = params.trigger || false;
+  v.Enable = params.view;
+  t.Enable = params.trigger;
   t.OnEnter.Add(params.enter);
   t.OnExit.Add(params.exit);
   //return { Trigger: t, View: t };
@@ -213,8 +212,8 @@ function t_capture(p, a)
 
     rival_team.Properties.Get("flag_state").Value = "у " + p.NickName;
 
-    rival_team.Ui.Hint.Value = p.NickName + " захватил флаг противника";
-    p.Team.Ui.Hint.Value = p.NickName + " захватил фаш флаг";
+    p.Ui.Hint.Value = p.NickName + " захватил флаг противника";
+    rival_team.Team.Ui.Hint.Value = p.NickName + " захватил фаш флаг";
   }
 }
 
