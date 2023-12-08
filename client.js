@@ -1,6 +1,4 @@
-try
-{
-  // Захват Флагов
+// Захват Флагов
 
 
 
@@ -10,7 +8,7 @@ try
 const STATE_START = 0, STATE_BUILDUNG = 1, STATE_GAME = 2, STATE_END = 3;
 
 // Переменные
-let inv = Inventory.GetContext(), main_timer = Timers.GetContext().Get("main"), state = Properties.GetContext().Get("state");
+let inv = Inventory.GetContext(), main_timer = Timers.GetContext().Get("main"), state = Properties.GetContext().Get("state"); 
 
 // Настройки
 
@@ -124,7 +122,7 @@ Damage.OnKill.Add(function (p, k)
     rival_team.Properties.Get("flag_state").Value = "потерян";
     rival_team.Ui.Hint.Value = k.NickName + " потерял ваш флаг";
     k.Team.Ui.Hint.Value = k.NickName + " потерял флаг соперника";
-
+    
     AreaService.Get(rival_team.Id + "_flag").Ranges.Add({Start: k.PositionIndex, End: {x: k.PositionIndex.x + 1, y: k.PositionIndex.y + 4, z: k.PositionIndex.z + 1}});
 
     k.Properties.Get("flag").Value = false;
@@ -245,7 +243,7 @@ function t_pickup(p, a)
     p.Properties.Get("flag").Value = true;
 
     p.Ui.Hint.Value = p.NickName + " подобрал флаг противника";
-    rival_team.Team.Ui.Hint.Value = p.NickName + " подобрал ваш флаг";
+    rival_team.Ui.Hint.Value = p.NickName + " подобрал ваш флаг";
 
     rival_team.Properties.Get("flag_state").Value = "у " + p.NickName;
   }
@@ -305,5 +303,3 @@ add_area({name: "capture", view: false, trigger: true, tags: ["captured", "red",
 add_area({name: "flag", view: false, trigger: true, tags: ["red_flag", "blue_flag"], enter: t_pickup});
 
 start();
-
-} catch(e) { Validate.ReportInvalid(e.name + " " + e.message); }
